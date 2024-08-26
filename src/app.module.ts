@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TagsModule } from './tags/tags.module';
-import { AuthModule } from './auth/auth.module';
+import { TagsModule } from './modules/tags/tags.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { ArticlesModule } from './modules/articles/articles.module';
 
 @Module({
-  imports: [TagsModule, AuthModule],
+  imports: [TagsModule, AuthModule, ArticlesModule, MongooseModule.forRoot('mongodb://localhost/medium')],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

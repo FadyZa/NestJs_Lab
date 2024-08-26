@@ -7,7 +7,4 @@ export class TagsDto {
     @MinLength(3)
     @IsNotEmpty()
     name: string;
-
-    @IsNumber()
-    id: number;
 }

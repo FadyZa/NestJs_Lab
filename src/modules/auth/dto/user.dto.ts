@@ -1,11 +1,8 @@
 /* eslint-disable prettier/prettier */
 
 import { IsEmail, IsNotEmpty, IsNumber, IsString, MaxLength, MinLength } from "class-validator";
-export class UserDto {
 
-
-    @IsNumber()
-    id: number;
+export class SignUpDto {
 
     @IsString()
     @MaxLength(10)
@@ -20,6 +17,19 @@ export class UserDto {
 
     @IsNumber()
     age: number;
+
+    @IsString()
+    @IsNotEmpty()
+    @MinLength(8)
+    password: string;
+}
+
+export class SignInDto {
+
+    @IsEmail()
+    @IsNotEmpty()
+    @IsString()
+    email: string;
 
     @IsString()
     @IsNotEmpty()

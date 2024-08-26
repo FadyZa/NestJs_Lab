@@ -13,7 +13,7 @@ export class TagsController {
     }
 
     @Get(':id')
-    getTagById(@Param("id", ParseIntPipe) id: number) {
+    getTagById(@Param("id") id: string) {
         return this._tagsService.getTagById(id);
     }
 
@@ -23,12 +23,12 @@ export class TagsController {
     }
 
     @Delete(':id')
-    removeTag(@Param("id", ParseIntPipe) id: number) {
+    removeTag(@Param("id") id: string) {
         return this._tagsService.removeTag(id)
     }
 
     @Put(":id")
-    updateTag(@Param("id", ParseIntPipe) id: number, @Body() newTag: any) {
+    updateTag(@Param("id") id: string, @Body() newTag: any) {
         return this._tagsService.updateTag(id, newTag);
     }
 
