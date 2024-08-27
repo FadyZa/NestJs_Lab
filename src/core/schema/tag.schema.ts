@@ -8,7 +8,7 @@ export class Tag {
     @Prop({ required: true })
     name: string
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+    @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
     createdBy: User
 }
 

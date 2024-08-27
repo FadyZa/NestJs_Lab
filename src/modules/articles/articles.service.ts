@@ -5,6 +5,7 @@ import { Article } from 'src/core/schema/article.schema';
 import { Model } from 'mongoose';
 import { v2 as cloudinary } from 'cloudinary';
 import { ArticleDto } from './dto/article.dto';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 cloudinary.config({
   cloud_name: "ddoniqytm",
@@ -15,19 +16,47 @@ cloudinary.config({
 @Injectable()
 export class ArticlesService {
 
-  constructor(@InjectModel(Article.name) private articleModel: Model<Article>) { }
+  constructor(@InjectModel(Article.name) private articleModel: Model<Article>, private readonly cloudinaryService: CloudinaryService) { }
 
-  async create(body: ArticleDto) {
-    await this.articleModel.insertMany(body);
+
+  async create(body: ArticleDto, img: Express.Multer.File, imgs: Express.Multer.File[], user: any) {
+
+    // Upload the cover image
+    const imgRes = await this.cloudinaryService.uploadFile(img)
+
+    // upload multiple images
+    let arrOfImgs = [];
+    for (const ele of imgs) {
+      const oneImg = await this.cloudinaryService.uploadFile(ele)
+      arrOfImgs.push(oneImg.secure_url);
+    }
+
+    await this.articleModel.insertMany({
+      ...body, coverImage: imgRes.secure_url,
+      images: arrOfImgs, author: user.id
+    });
     return { message: "Added Successfully!", articles: await this.articleModel.find() };
   }
 
+
+
+  async uploadImg(imgs: Express.Multer.File[]) {
+    let arrOfImgs = [];
+
+    for (const img of imgs) {
+      const imgRes = await this.cloudinaryService.uploadFile(img)
+      arrOfImgs.push(imgRes.secure_url);
+    }
+    return { message: "Added Successfully!", arrOfImgs };
+  }
+
+
   async findAll() {
-    return await this.articleModel.find();
+    return await this.articleModel.find().populate('author', "name email").populate('tagList', 'name');
   }
 
   async findOne(id: string) {
-    return await this.articleModel.findById(id);
+    return await this.articleModel.findById(id).populate('author', "name email").populate('tagList', 'name');
   }
 
   async update(id: string, body: any) {

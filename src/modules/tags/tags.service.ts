@@ -17,9 +17,10 @@ export class TagsService {
         return await this.tagModel.findById(id);
     }
 
-    async addTag(tag: any) {
+    async addTag(tag: any, user: any) {
+        tag.createdBy = user.id;
         await this.tagModel.insertMany(tag)
-        return { message: "Added succssfully!", tags: await this.tagModel.find() };
+        return { message: "Added succssfully!", tags: await this.tagModel.find({ createdBy: user.id }) };
     }
 
     async removeTag(id: string) {

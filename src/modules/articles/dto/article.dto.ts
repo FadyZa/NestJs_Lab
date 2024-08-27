@@ -1,7 +1,6 @@
-import { ArrayNotEmpty, IsArray, IsNotEmpty, IsString, MaxLength, maxLength, MinLength } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsMongoId, IsNotEmpty, IsString, MaxLength, maxLength, MinLength } from "class-validator";
 
 export class ArticleDto {
-
 
     @IsString()
     @IsNotEmpty()
@@ -22,13 +21,4 @@ export class ArticleDto {
     @IsNotEmpty()
     @MinLength(5)
     content: string;
-
-    @IsString()
-    @IsNotEmpty()
-    coverImage: string;
-
-    @IsArray()
-    @ArrayNotEmpty()
-    @IsString({ each: true })
-    images: string[];
 }

@@ -17,20 +17,20 @@ export class Article {
     @Prop({ required: true })
     content: string;
 
-    @Prop({ required: true })
+    @Prop()
     coverImage: string;
 
-    @Prop({ required: true })
+    @Prop()
     images: string[];
 
     @Prop()
     likes: number;
 
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }] })
-    author: User
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "User" })
+    author: User;
 
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }] })
-    tagList: Tag[]
+    tagList: Tag[];
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article)
